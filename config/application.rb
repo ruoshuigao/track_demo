@@ -21,5 +21,11 @@ module TrackDemo
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    config.active_record.default_timezone = :local
+    config.time_zone = 'Beijing'
+
+    config.i18n.available_locales = ['zh-CN', :zh, :en]
+    config.i18n.default_locale = 'zh-CN'
   end
 end

@@ -1,0 +1,52 @@
+<div class="page page-root">
+  <div class="page-inner" id="page-events">
+    <div class="filters">
+    </div>
+    <div class="team-events">
+      <% @team_events_hash.each do |event_hash| %>
+        <div class="event-days">
+          <h4 class="events-day-title"><%= event_hash[:created_date] %></h4>
+          <div class="events-day-content">
+            <% event_hash[:items].each do |item| %>
+              <div class="events-ancestor">
+                <h5 class="events-ancestor-title"><%= link_to item[:category], '#' %></h5>
+                <% item[:events].each do |event| %>
+                  <div class="event event-common">
+                    <%= image_tag asset_path("avatar/small_default.png") %>
+                    <div class="event-main">
+                      <div class="event-head">
+                        <%= link_to event[:created_at], '#' %>
+                        <span class="event-actor">
+                          <%= link_to event[:actor_name], '#' %>
+                        </span>
+                        <span class="event-actoin">
+                          <%= render partial: "#{event[:action]}", locals: { event: event } %>
+                        </span>
+                        <span class="event-text">
+                          <span class="emphasize">
+                            <% if event[:priority] %>
+                              <em class="priority"><%= event[:priority] %></em>
+                            <% end %>
+                            <% if event[:tag] %>
+                              <%= link_to event[:tag], '#' %>
+                            <% end %>
+                            <%= link_to event[:trackable_name], '#' %>
+                          </span>
+                        </span>
+                      </div>
+                      <% if event[:action].end_with?('comment') %>
+                        <div class="event-body">
+                          <span class="event-text"><%= event[:comment_content] %></span>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

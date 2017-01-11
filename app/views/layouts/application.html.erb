@@ -9,6 +9,25 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="wrapper">
+      <div class="header">
+        <h1 class="logo">TrackDemo</h1>
+        <ul class="nav">
+          <li id="nav-project"><%= link_to '项目', '#' %></li>
+          <li id="nav-events"><%= link_to '事件', '#' %></li>
+          <li id="nav-calendar"><%= link_to '日历', '#' %></li>
+          <li id="nav-week"><%= link_to '周报', '#' %></li>
+          <li id="nav-members"><%= link_to '团队', '#' %></li>
+          <li id="nav-me"><%= link_to '我自己', '#' %></li>
+        </ul>
+        <div class="command-bar">
+        </div>
+      </div>
+      <div class="container">
+        <%= yield %>
+      </div>
+      <div class="footer">
+      </div>
+    </div>
   </body>
 </html>
