@@ -31,6 +31,12 @@ gem 'jbuilder', '~> 2.5'
 # RequestStore gives you per-request global storage.
 gem 'request_store', '~> 1.3'
 
+# AASM is a continuation of the acts-as-state-machine rails plugin, built for plain Ruby objects.
+gem 'aasm', '~> 4.11'
+
+# Soft deletion
+gem 'paranoia', '~> 2.2'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -90,11 +90,13 @@ module Eventable
       object_attrs_changed = changes.except(*self.event_options[:skip])
       return if object_attrs_changed.empty?
 
-      case trackable
-      when Team || Project
+      case self
+      when Team
         {}
+      when Project
+        status_changed? ? {prev: changes[:status].first, after: changes[:status].last} : {}
       when Todo
-        if status.changed? || assignee_id.changed? || due_at.changed?
+        if status_changed? || assignee_id_changed? || due_at_changed?
           {prev: changes.values.first, after: changes.values.last}
         else
           {}
@@ -106,11 +108,11 @@ module Eventable
     def event_update_action
       if self.class.column_names.include?('status') && status_changed?
         'status_transition'
-      elsif self.class.column_names.include?('assignee_id') && assignee_id.change?
+      elsif self.class.column_names.include?('assignee_id') && assignee_id_changed?
         'assign'
-      elsif self.class.column_names.include?('due_at') && due_at.change?
+      elsif self.class.column_names.include?('due_at') && due_at_changed?
         'set_due_at'
-      elsif self.class.column_names.included?('deleted_at') && deleted_at.change?
+      elsif self.class.column_names.include?('deleted_at') && deleted_at_changed?
         'recover'
       else
         'update'
@@ -118,7 +120,7 @@ module Eventable
     end
 
     def event_actor
-      RequestStore.store[:current_user] if RequestStore.store[:current_user]
+      RequestStore.store[:current_user]
     end
 
     def event_actor_ip

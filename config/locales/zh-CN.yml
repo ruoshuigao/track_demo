@@ -5,8 +5,8 @@ zh-CN:
         action_enum:
           create: '创建了'
           destroy: '删除了'
-          status_archive: '归档了'
-          status_unarchive: '激活了'
+          status_archived: '归档了'
+          status_unarchived: '激活了'
           status_running: '开始处理'
           status_pause: '暂停'
           status_completed: '完成'

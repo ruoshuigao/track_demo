@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (4.11.1)
     actioncable (5.0.1)
       actionpack (= 5.0.1)
       nio4r (~> 1.2)
@@ -80,6 +81,8 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
+    paranoia (2.2.0)
+      activerecord (>= 4.0, < 5.1)
     puma (3.6.2)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -151,11 +154,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm (~> 4.11)
   byebug
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
+  paranoia (~> 2.2)
   puma (~> 3.0)
   rails (~> 5.0.1)
   rails-controller-testing (~> 1.0)

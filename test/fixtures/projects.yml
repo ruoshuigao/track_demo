@@ -1,0 +1,11 @@
+first_project:
+  team: second_team
+  name: 'first project'
+  description: 'first project'
+  status: 'status_fresh'
+
+second_project:
+  team: second_team
+  name: 'second project'
+  description: 'second project'
+  status: 'status_archived'
