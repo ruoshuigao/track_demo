@@ -2,6 +2,8 @@ first_team_event:
   trackable:     first_team (Team)
   ancestor_type: "Team"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:first_team) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "create"
   data:          '{"content":{"trackable_name":"first_team","ancestor_name":"first_team"}}'
   created_at:    <%= DateTime.current - 1.day %>
@@ -12,6 +14,8 @@ second_team_event:
   trackable:     second_team (Team)
   ancestor_type: "Team"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:second_team) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "create"
   data:         '{"content":{"trackable_name":"second_team","ancestor_name":"second_team"}}'
   created_at:    '2017-01-11 12:25:36'
@@ -22,6 +26,8 @@ first_project_event:
   trackable:     first_project (Project)
   ancestor_type: "Project"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:first_project) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "create"
   data:          '{"content":{"trackable_name":"first_project","ancestor_name":"first_project"}}'
   created_at:    '2017-01-11 10:25:36'
@@ -32,6 +38,8 @@ first_todo_event:
   trackable:     fresh_todo (Todo)
   ancestor_type: "Project"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:first_project) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "create"
   data:          '{"content":{"trackable_name":"first_todo","ancestor_name":"first_project"}}'
   created_at:    '2017-01-12 12:25:36'
@@ -42,6 +50,8 @@ running_first_todo_event:
   trackable:     fresh_todo (Todo)
   ancestor_type: "Project"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:first_project) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "status_transition"
   data:          '{"content":{"trackable_name":"second_todo","ancestor_name":"first_project"}}'
   created_at:    '2017-01-12 11:25:36'
@@ -52,6 +62,8 @@ second_project_event:
   trackable:     second_project (Project)
   ancestor_type: "Project"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:second_project) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "create"
   data:          '{"content":{"trackable_name":"second_project","ancestor_name":"second_project"}}'
   created_at:    '2017-01-12 10:25:36'
@@ -62,6 +74,8 @@ pause_first_todo_event:
   trackable:     fresh_todo (Todo)
   ancestor_type: "Project"
   ancestor_id:   <%= ActiveRecord::FixtureSet.identify(:first_project) %>
+  actor_id:      <%= ActiveRecord::FixtureSet.identify(:ava) %>
+  actor_name:    'ava'
   action:        "status_transition"
   data:          '{"content":{"trackable_name":"second_todo","ancestor_name":"first_project"}}'
   created_at:    '2017-01-12 08:25:36'

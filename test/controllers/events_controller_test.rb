@@ -50,7 +50,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal team_events_hash.first[:items].last[:events].first[:action], 'create'
 
     # 第二个节点数据
-    assert_equal team_events_hash.last[:created_date], Date.current
+    assert_equal team_events_hash.last[:created_date].to_s, '2017-01-12'
     assert_equal team_events_hash.last[:items].length, 3
 
     assert_equal team_events_hash.last[:items].first[:category], events(:first_project_event).data['content']['ancestor_name']

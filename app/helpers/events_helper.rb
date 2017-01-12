@@ -24,4 +24,15 @@ module EventsHelper
   def event_trackable_type
     {Team: '团队', Project: '项目', Todo: '任务'}
   end
+
+  def event_redirect_url_with(id, type)
+    case type
+    when 'Team'
+      team_path(id)
+    when 'Project'
+      project_path(id)
+    when 'Todo'
+      todo_path(id)
+    end
+  end
 end

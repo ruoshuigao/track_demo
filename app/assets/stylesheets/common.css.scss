@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family:'Helvetica Neue', Helvetica, 'PingFang SC', 'Lantinghei SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+  font-size: 16px;
+  background-color: #f4f7ed;
+  line-height: 1.5;
+  display: block;
+}
+
+.wrapper {
+  min-width: 1080px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+div {
+  display: block;
+}
+
+/** header **/
+.header {
+  width: 960px;
+  margin: 20px auto;
+  height: 30px;
+}
+
+.header:before, .header:after {
+  display: table;
+  content: "";
+}
+
+.header:after {
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+
+h1 {
+  display: block;
+  -webkit-margin-before: 0.67em;
+  -webkit-margin-after: 0.67em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+}
+
+.header .logo {
+  float: left;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 30px;
+}
+
+.header .nav {
+  float: left;
+  margin-left: 30px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+  display: block;
+}
+
+.header .nav li {
+  float: left;
+  margin: 0 15px;
+}
+
+li {
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.header .nav li a {
+  float: left;
+  display: block;
+  font-size: 16px;
+  color: rgba(85,85,85,0.5);
+  line-height: 30px;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  vertical-align: baseline;
+  background: transparent;
+}

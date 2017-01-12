@@ -1,0 +1,30 @@
+<div class="event event-common">
+  <%= link_to image_tag("avatar/small_default.png"), user_path(event[:actor_id]), class: 'from', target: '_blank' %>
+  <div class="event-main">
+    <div class="event-head">
+      <%= link_to event[:created_at], '#', class: 'event-created-at' %>
+      <span class="event-actor">
+        <%= link_to event[:actor_name], user_path(event[:actor_id]), class: 'link-member', target: '_blank' %>
+      </span>
+      <span class="event-actoin">
+        <%= render partial: "#{event[:action]}", locals: { event: event } %>
+      </span>
+      <span class="event-text">
+        <span class="emphasize">
+          <% if event[:priority] %>
+            <em class="priority"><%= event[:priority] %></em>
+          <% end %>
+          <% if event[:tag] %>
+            <%= link_to event[:tag], '#', class: 'tag' %>
+          <% end %>
+          <%= link_to event[:trackable_name], event_redirect_url_with(event[:trackable_id], event[:trackable_type]), target: '_blank' %>
+        </span>
+      </span>
+    </div>
+    <% if event[:action].end_with?('comment') %>
+      <div class="event-body">
+        <span class="event-text"><%= event[:comment_content] %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

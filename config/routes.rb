@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  resources :teams, only: :create do
+  resources :users, only: [:create, :edit, :update, :show]
+
+  resources :teams, only: [:create, :show] do
     resources :projects, only: [:index, :new, :create]
     resources :events, only: :index
   end

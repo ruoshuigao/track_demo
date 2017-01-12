@@ -17,8 +17,10 @@ module EventsGroupable
   def events_day_hash_with(grouped_events)
     grouped_events.map do |events_arr|
       {
-        category: events_arr.first.data['content']['ancestor_name'],
-        events:   events_hash_with(events_arr)
+        category:      events_arr.first.data['content']['ancestor_name'],
+        ancestor_id:   events_arr.first.ancestor_id,
+        ancestor_type: events_arr.first.ancestor_type,
+        events:        events_hash_with(events_arr)
       }
     end
   end
