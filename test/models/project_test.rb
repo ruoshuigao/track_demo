@@ -78,4 +78,10 @@ class ProjectTest < ActiveSupport::TestCase
       @project.update(name: 'change name')
     end
   end
+
+  test 'should create access for team creator when create a new team' do
+    team    = teams(:first_team)
+    project = Project.create(user_id: @current_user.id, team_id: team.id, name: 'access project')
+    assert @current_user.resources.exists?(resourceable_id: project.id, team_id: team.id)
+  end
 end

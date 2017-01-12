@@ -1,6 +1,7 @@
 class Project < ApplicationRecord
   include AASM
   include Eventable
+  include Accessable
 
   acts_as_paranoid
   has_event skip: [:created_at, :updated_at]

@@ -33,4 +33,9 @@ class TeamTest < ActiveSupport::TestCase
       team.update(title: 'change title')
     end
   end
+
+  test 'should create access for team creator when create a new team' do
+    team = Team.create(title: 'access team', user_id: @current_user.id)
+    assert @current_user.resources.exists?(resourceable_id: team.id, team_id: team.id)
+  end
 end
