@@ -3,6 +3,7 @@ require 'test_helper'
 class TodoTest < ActiveSupport::TestCase
   setup do
     travel_to Date.new(2017, 01, 11)
+    @current_user = RequestStore.store[:current_user] ||= users(:ava)
   end
 
   teardown do
@@ -11,14 +12,15 @@ class TodoTest < ActiveSupport::TestCase
 
   test 'should reate an event when create a new todo' do
     project = projects(:todo_project)
-    ava     = users(:ava)
-    todo    = Todo.create(user_id: ava.id, user_name: ava.name, project_id: project.id, name: 'first test todo')
+    todo    = Todo.create(user_id: @current_user.id, user_name: @current_user.name, project_id: project.id, name: 'first test todo')
     event   = Event.last
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'create'
     assert_equal event.team_id, project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -29,14 +31,15 @@ class TodoTest < ActiveSupport::TestCase
 
   test 'should reate an event when create a new todo with priority and tag' do
     project = projects(:todo_project)
-    ava     = users(:ava)
-    todo    = Todo.create(user_id: ava.id, user_name: ava.name, project_id: project.id, name: 'first test todo', priority: '!!!', tag: 'API' )
+    todo    = Todo.create(user_id: @current_user.id, user_name: @current_user.name, project_id: project.id, name: 'first test todo', priority: '!!!', tag: 'API' )
     event   = Event.last
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'create'
     assert_equal event.team_id, project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -54,6 +57,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -69,6 +74,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -84,6 +91,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -99,6 +108,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -115,6 +126,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'assign'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -132,6 +145,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'assign'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -149,6 +164,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'assign'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -166,6 +183,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'set_due_at'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -182,6 +201,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'set_due_at'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -199,6 +220,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'set_due_at'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -215,6 +238,8 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'destroy'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
@@ -231,9 +256,18 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Todo'
     assert_equal event.ancestor_id, todo.project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'recover'
     assert_equal event.team_id, todo.project.team.id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
+  end
+
+  test 'should not create event when update todo base info' do
+    todo = todos(:fresh_todo)
+    assert_no_difference('Event.count') do
+      todo.update(name: 'chang name')
+    end
   end
 end

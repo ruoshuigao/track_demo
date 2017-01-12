@@ -2,16 +2,19 @@ require 'test_helper'
 
 class ProjectTest < ActiveSupport::TestCase
   setup do
+    @current_user = RequestStore.store[:current_user] ||= users(:ava)
     @project = projects(:first_project)
   end
 
   test 'should create an event when create a new project' do
-    project = Project.create(team_id: teams(:second_team).id, name: 'test project')
+    project = Project.create(team_id: teams(:second_team).id, name: 'test project', user_id: @current_user.id)
     event = Event.last
     assert_equal event.trackable_id, project.id
     assert_equal event.trackable_type, 'Project'
     assert_equal event.ancestor_id, project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'create'
     assert_equal event.team_id, project.team.id
     assert_equal event.data['content']['trackable_name'], project.name
@@ -25,6 +28,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Project'
     assert_equal event.ancestor_id, @project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'destroy'
     assert_equal event.team_id, @project.team.id
     assert_equal event.data['content']['trackable_name'], @project.name
@@ -40,6 +45,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Project'
     assert_equal event.ancestor_id, @project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
     assert_equal event.team_id, @project.team.id
     assert_equal event.data['content']['trackable_name'], @project.name
@@ -57,6 +64,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.trackable_type, 'Project'
     assert_equal event.ancestor_id, project.id
     assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
     assert_equal event.team_id, project.team.id
     assert_equal event.data['content']['trackable_name'], project.name
