@@ -14,5 +14,9 @@ Rails.application.routes.draw do
 
   resources :todos, only: [:show, :edit, :update, :destroy] do
     post :do_runing, :do_pause, :do_completed, :do_reorder, :recover, on: :member
+
+    resources :comments, only: [:new, :create]
   end
+
+  resources :comments, only: [:edit, :update, :destroy]
 end

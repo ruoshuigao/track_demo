@@ -85,20 +85,28 @@ module Eventable
       when Project
         ancestor_hash[:ancestor_id]          = self.id
         ancestor_hash[:ancestor_type]        = 'Project'
-        ancestor_hash[:team_id]              = self.team.id
+        ancestor_hash[:team_id]              = self.team_id
         ancestor_hash[:resource_id]          = 1
         meta_hash[:content][:trackable_name] = self.name
         meta_hash[:content][:ancestor_name]  = self.name
         [ancestor_hash, meta_hash]
       when Todo
-        ancestor_hash[:ancestor_id]          = self.project.id
+        ancestor_hash[:ancestor_id]          = self.project_id
         ancestor_hash[:ancestor_type]        = 'Project'
-        ancestor_hash[:team_id]              = self.project.team.id
+        ancestor_hash[:team_id]              = self.project.team_id
         ancestor_hash[:resource_id]          = 1
         meta_hash[:content][:trackable_name] = self.name
         meta_hash[:content][:ancestor_name]  = self.project.name
         meta_hash[:content][:priority]       = self.priority if self.priority
         meta_hash[:content][:tag]            = self.tag      if self.tag
+        [ancestor_hash, meta_hash]
+      when Comment # 需要兼容评论周报等场景
+        ancestor_hash[:ancestor_id]          = self.commentable.id
+        ancestor_hash[:ancestor_type]        = self.commentable.class.name
+        ancestor_hash[:team_id]              = self.commentable.project.team_id
+        ancestor_hash[:resource_id]          = 1
+        meta_hash[:content][:trackable_name] = self.content
+        meta_hash[:content][:ancestor_name]  = self.commentable.name
         [ancestor_hash, meta_hash]
       end
     end
