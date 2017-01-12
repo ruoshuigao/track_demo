@@ -1,2 +1,3 @@
 todo_first_comment:
+  commentable: fresh_todo (Todo)
   content: 'first comment'

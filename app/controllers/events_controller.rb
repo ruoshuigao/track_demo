@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   include EventsGroupable
 
   def index
-    team_events       = Event.where(team_id: params[:team_id]).order(id: :desc)
-    @team_events_hash = team_events_hash_with(team_events)
+    current_user_resource_ids = current_user.resource_ids
+    team_events               = Event.where(team_id: params[:team_id], resource_id: current_user_resource_ids).order(id: :desc).page(params[:page]).per(50)
+    @team_events_hash         = team_events_hash_with(team_events)
   end
 end

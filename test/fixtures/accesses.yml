@@ -1,0 +1,15 @@
+ava_access_of_first_team:
+  user:     ava
+  resource: first_team_resource
+
+ava_access_of_second_team:
+  user:     ava
+  resource: second_team_resource
+
+ava_access_of_first_project:
+  user:     ava
+  resource: first_project_resource
+
+ava_access_of_second_project:
+  user:     ava
+  resource: second_project_resource

@@ -37,6 +37,9 @@ gem 'aasm', '~> 4.11'
 # Soft deletion
 gem 'paranoia', '~> 2.2'
 
+# Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 4+
+gem 'kaminari', '~> 1.0'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

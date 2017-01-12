@@ -41,7 +41,7 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'create'
-    assert_equal event.team_id, project.team.id
+    assert_equal event.team_id, project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], project.name
     assert_equal event.data['content']['priority'], '!!!'
@@ -55,12 +55,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
   end
@@ -72,12 +72,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
   end
@@ -89,12 +89,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
   end
@@ -106,12 +106,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
   end
@@ -124,12 +124,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'assign'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_nil   event.data['content']['prev']
@@ -143,12 +143,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'assign'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_nil   event.data['content']['after']
@@ -162,12 +162,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'assign'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_equal   event.data['content']['after'], rainbow.name
@@ -181,12 +181,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'set_due_at'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_equal Date.parse(event.data['content']['after']).to_s, due_at
@@ -199,12 +199,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'set_due_at'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_nil   event.data['content']['after']
@@ -218,12 +218,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'set_due_at'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_equal Date.parse(event.data['content']['after']).to_s, due_at
@@ -236,12 +236,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'destroy'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
   end
@@ -254,12 +254,12 @@ class TodoTest < ActiveSupport::TestCase
 
     assert_equal event.trackable_id, todo.id
     assert_equal event.trackable_type, 'Todo'
-    assert_equal event.ancestor_id, todo.project.id
+    assert_equal event.ancestor_id, todo.project_id
     assert_equal event.ancestor_type, 'Project'
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'recover'
-    assert_equal event.team_id, todo.project.team.id
+    assert_equal event.team_id, todo.project.team_id
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
   end

@@ -16,7 +16,7 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'create'
-    assert_equal event.team_id, project.team.id
+    assert_equal event.team_id, project.team_id
     assert_equal event.data['content']['trackable_name'], project.name
     assert_equal event.data['content']['ancestor_name'], project.name
   end
@@ -31,7 +31,7 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'destroy'
-    assert_equal event.team_id, @project.team.id
+    assert_equal event.team_id, @project.team_id
     assert_equal event.data['content']['trackable_name'], @project.name
     assert_equal event.data['content']['ancestor_name'], @project.name
   end
@@ -48,7 +48,7 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
-    assert_equal event.team_id, @project.team.id
+    assert_equal event.team_id, @project.team_id
     assert_equal event.data['content']['trackable_name'], @project.name
     assert_equal event.data['content']['ancestor_name'], @project.name
     assert_equal event.data['content']['after'], 'status_archived'
@@ -67,7 +67,7 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal event.actor_id, @current_user.id
     assert_equal event.actor_name, @current_user.name
     assert_equal event.action, 'status_transition'
-    assert_equal event.team_id, project.team.id
+    assert_equal event.team_id, project.team_id
     assert_equal event.data['content']['trackable_name'], project.name
     assert_equal event.data['content']['ancestor_name'], project.name
     assert_equal event.data['content']['after'], 'status_unarchived'

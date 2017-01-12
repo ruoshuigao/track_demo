@@ -24,10 +24,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should not create an event when destroy a comment' do
-    todo    = todos(:fresh_todo)
     comment = comments(:todo_first_comment)
-    comment.commentable = todo
-    comment.save
+    todo    = comment.commentable
     comment.destroy
     event   = Event.last
 
