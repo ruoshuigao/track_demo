@@ -3,7 +3,7 @@ class CreateProjects < ActiveRecord::Migration[5.0]
     create_table :projects do |t|
       t.integer :user_id
       t.integer :team_id
-      t.string  :name,        limit: 20
+      t.string  :name,        limit: 20,  null: false
       t.string  :description, limit: 1000
       t.integer :category,    default: 0
       t.string  :status,      limit: 50

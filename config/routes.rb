@@ -8,5 +8,11 @@ Rails.application.routes.draw do
 
   resources :projects, only: [:show, :edit, :update, :destroy] do
     post :do_archived, :do_unarchived, on: :member
+
+    resources :todos, only: [:new, :create]
+  end
+
+  resources :todos, only: [:show, :edit, :update, :destroy] do
+    post :do_runing, :do_pause, :do_completed, :do_reorder, :recover, on: :member
   end
 end

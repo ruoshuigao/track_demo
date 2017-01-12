@@ -10,10 +10,10 @@ module EventsHelper
   end
 
   # 指派任务文案
-  def event_assign_with(pre, after)
-    return "给 #{after} 指派了任务" if pre.nil?
-    return "取消了 #{pre} 的任务" if after.nil?
-    return "将 #{pre} 的任务指派给 #{after}"
+  def event_assign_with(prev, after)
+    return "给 #{after} 指派了任务" if prev.nil?
+    return "取消了 #{prev} 的任务" if after.nil?
+    return "将 #{prev} 的任务指派给 #{after}"
   end
 
   # 动作名称

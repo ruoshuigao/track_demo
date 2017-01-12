@@ -1,43 +1,43 @@
 first_team:
   ancestor_type: "Team"
-  ancestor_id: 1
-  action: "create"
-  data:  '{"content":{"trackable_name":"first_team","ancestor_name":"first_team"}}'
-  created_at: <%= DateTime.current - 1.day %>
+  ancestor_id:   1
+  action:        "create"
+  data:          '{"content":{"trackable_name":"first_team","ancestor_name":"first_team"}}'
+  created_at:    <%= DateTime.current - 1.day %>
 
 second_team:
   ancestor_type: "Team"
-  ancestor_id: 2
-  action: "create"
-  data:  '{"content":{"trackable_name":"second_team","ancestor_name":"second_team"}}'
+  ancestor_id:   2
+  action:        "create"
+  data:         '{"content":{"trackable_name":"second_team","ancestor_name":"second_team"}}'
 
 first_project:
   ancestor_type: "Project"
-  ancestor_id: 1
-  action: "create"
-  data:  '{"content":{"trackable_name":"first_project","ancestor_name":"first_project"}}'
-  created_at: <%= DateTime.current - 1.day %>
+  ancestor_id:   1
+  action:        "create"
+  data:          '{"content":{"trackable_name":"first_project","ancestor_name":"first_project"}}'
+  created_at:    <%= DateTime.current - 1.day %>
 
 first_todo:
   ancestor_type: "Project"
-  ancestor_id: 1
-  action: "create"
-  data:  '{"content":{"trackable_name":"first_todo","ancestor_name":"first_project"}}'
+  ancestor_id:   1
+  action:        "create"
+  data:          '{"content":{"trackable_name":"first_todo","ancestor_name":"first_project"}}'
 
 second_todo:
   ancestor_type: "Project"
-  ancestor_id: 1
-  action: "create"
-  data:  '{"content":{"trackable_name":"second_todo","ancestor_name":"first_project"}}'
+  ancestor_id:   1
+  action:        "create"
+  data:          '{"content":{"trackable_name":"second_todo","ancestor_name":"first_project"}}'
 
 second_project:
   ancestor_type: "Project"
-  ancestor_id: 2
-  action: "create"
-  data:  '{"content":{"trackable_name":"second_project","ancestor_name":"second_project"}}'
+  ancestor_id:   2
+  action:        "create"
+  data:          '{"content":{"trackable_name":"second_project","ancestor_name":"second_project"}}'
 
 running_first_todo:
   ancestor_type: "Project"
-  ancestor_id: 1
-  action: "create"
-  data:  '{"content":{"trackable_name":"first_todo","ancestor_name":"first_project","prev":"status_fresh", "after":"status_running"}}'
+  ancestor_id:   1
+  action:        "create"
+  data:          '{"content":{"trackable_name":"first_todo","ancestor_name":"first_project","prev":"status_fresh", "after":"status_running"}}'

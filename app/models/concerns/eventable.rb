@@ -49,20 +49,20 @@ module Eventable
 
     # 手工记录操作事件
     def create_event(action, item_data = {})
-      meta_data = {content: {trackable_name: extra_data[:trackable_name], ancestor_name: extra_data[:ancestor_name]}}
-      meta_data[:content].merge!(item_data)
+      ancestor_data_hash,  meta_data_hash = meta_data
+      meta_data_hash[:content].merge!(item_data)
       options = {
         actor_id:      event_actor&.id,
         actor_name:    event_actor&.name,
         actor_avatar:  event_actor&.avatar,
         action:        action.to_s,
-        data:          meta_data,
+        data:          meta_data_hash,
         ip:            event_actor_ip,
         user_agent:    event_actor_user_agent,
-        ancestor_id:   extra_data[:ancestor_id],
-        ancestor_type: extra_data[:ancestor_type],
-        team_id:       extra_data[:team_id],
-        resource_id: 1
+        ancestor_id:   ancestor_data_hash[:ancestor_id],
+        ancestor_type: ancestor_data_hash[:ancestor_type],
+        team_id:       ancestor_data_hash[:team_id],
+        resource_id:   ancestor_data_hash[:resource_id]
       }
       events.create!(options)
     end
@@ -70,14 +70,36 @@ module Eventable
     private
 
     # TODO 添加权限时补充 resource_id
-    def extra_data
+    def meta_data
+      meta_hash     = {content: {}}
+      ancestor_hash = {}
       case self
       when Team
-        {ancestor_id: self.id, ancestor_type: 'Team', team_id: self.id, trackable_name: self.title, ancestor_name: self.title}
+        ancestor_hash[:ancestor_id]          = self.id
+        ancestor_hash[:ancestor_type]        = 'Team'
+        ancestor_hash[:team_id]              = self.id
+        ancestor_hash[:resource_id]          = 1
+        meta_hash[:content][:trackable_name] = self.title
+        meta_hash[:content][:ancestor_name]  = self.title
+        [ancestor_hash, meta_hash]
       when Project
-        {ancestor_id: self.id, ancestor_type: 'Project', team_id: self.team.id, trackable_name: self.name, ancestor_name: self.name}
+        ancestor_hash[:ancestor_id]          = self.id
+        ancestor_hash[:ancestor_type]        = 'Project'
+        ancestor_hash[:team_id]              = self.team.id
+        ancestor_hash[:resource_id]          = 1
+        meta_hash[:content][:trackable_name] = self.name
+        meta_hash[:content][:ancestor_name]  = self.name
+        [ancestor_hash, meta_hash]
       when Todo
-        {ancestor_id: self.project.id, ancestor_type: 'Project', team_id: self.project.team.id, trackable_name: self.name, ancestor_name: self.project.name}
+        ancestor_hash[:ancestor_id]          = self.project.id
+        ancestor_hash[:ancestor_type]        = 'Project'
+        ancestor_hash[:team_id]              = self.project.team.id
+        ancestor_hash[:resource_id]          = 1
+        meta_hash[:content][:trackable_name] = self.name
+        meta_hash[:content][:ancestor_name]  = self.project.name
+        meta_hash[:content][:priority]       = self.priority if self.priority
+        meta_hash[:content][:tag]            = self.tag      if self.tag
+        [ancestor_hash, meta_hash]
       end
     end
 
@@ -94,10 +116,19 @@ module Eventable
       when Team
         {}
       when Project
-        status_changed? ? {prev: changes[:status].first, after: changes[:status].last} : {}
+        status_changed? ? { prev: changes[:status].first, after: changes[:status].last } : {}
       when Todo
-        if status_changed? || assignee_id_changed? || due_at_changed?
-          {prev: changes.values.first, after: changes.values.last}
+        if status_changed?
+          { prev: changes[:status].first, after: changes[:status].last }
+        elsif assignee_id_changed?
+          # 用户id不同，用户名相同的情况
+          if changes[:assignee_name]
+            { prev: changes[:assignee_name].first, after: changes[:assignee_name].last }
+          else
+            { prev: self.assignee_name, after: self.assignee_name }
+          end
+        elsif due_at_changed?
+          { prev: changes[:due_at].first, after: changes[:due_at].last }
         else
           {}
         end
@@ -112,8 +143,6 @@ module Eventable
         'assign'
       elsif self.class.column_names.include?('due_at') && due_at_changed?
         'set_due_at'
-      elsif self.class.column_names.include?('deleted_at') && deleted_at_changed?
-        'recover'
       else
         'update'
       end
