@@ -11,7 +11,7 @@ class Project < ApplicationRecord
 
   belongs_to :team
   belongs_to :user
-  has_many   :todos, dependent: :destroy
+  has_many   :todos, dependent: :delete_all
 
   # 项目状态机
   aasm column: :status, no_direct_assignment: true do
