@@ -48,7 +48,7 @@ module EventsGroupable
   # 根据 event 生成的日期，对 events 分组
   def grouped_events_by_date(events)
     # 按 events 生成的日期分组
-    grouped_events_by_date = events.group_by {|event| event.created_at.to_date}
+    grouped_events_by_date = events.group_by { |event| event.created_at.to_date }
     # 对分组后的数据进行重组，value 值为根据祖先分后数据
     grouped_events_by_date.each_pair do |created_date, events_arr|
       grouped_events_by_date[created_date] = grouped_events_by_ancestor(events_arr)

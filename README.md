@@ -25,7 +25,7 @@
     * 直接引用，不需要过滤指定字段: `has_event`
     * 指定 `action`: `has_event on: [:create]`
     * 过滤指定字段: `has_event skip: [:过滤字段1, :过滤字段 2]`
-    * 以上若指定`action` 则只创建指定`action`的`event`, 否则对`create`, `update`, `destroy`, `status_transaction` 等自动创建`event`
+    * 以上若指定 `action` 则只创建指定 `action` 的 `event` , 否则对 `create`, `update`, `destroy`, `status_transaction` 等自动创建 `event`
   2. 手动创建`event`
     `object.create_event('action', data)`
     * 举例: `@todo.commentable.create_event(:destroy_comment, {comment_content: content})`

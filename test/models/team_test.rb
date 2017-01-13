@@ -6,7 +6,7 @@ class TeamTest < ActiveSupport::TestCase
   end
 
   test 'should create an event when create a new team' do
-    team = Team.create(title: 'test team', user_id: @current_user.id)
+    team  = Team.create(title: 'test team', user_id: @current_user.id)
     event = Event.last
     assert_equal event.trackable_id, team.id
     assert_equal event.trackable_type, 'Team'

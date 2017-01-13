@@ -155,8 +155,8 @@ class TodoTest < ActiveSupport::TestCase
   end
 
   test 'should create an event when change a todo to another assignee' do
-    todo          = todos(:assigned_todo)
-    rainbow       = users(:rainbow)
+    todo    = todos(:assigned_todo)
+    rainbow = users(:rainbow)
     todo.update_attributes(assignee_id: rainbow.id, assignee_name: rainbow.name)
     event = Event.last
 

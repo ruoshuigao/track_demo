@@ -49,7 +49,7 @@ module Eventable
 
     # 手工记录操作事件
     def create_event(action, item_data = {})
-      ancestor_data_hash,  meta_data_hash = meta_data
+      ancestor_data_hash, meta_data_hash = meta_data
       meta_data_hash[:content].merge!(item_data)
       options = {
         actor_id:      event_actor&.id,

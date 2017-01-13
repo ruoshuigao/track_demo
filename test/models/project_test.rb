@@ -3,12 +3,12 @@ require 'test_helper'
 class ProjectTest < ActiveSupport::TestCase
   setup do
     @current_user = RequestStore.store[:current_user] ||= users(:ava)
-    @project = projects(:first_project)
+    @project      = projects(:first_project)
   end
 
   test 'should create an event when create a new project' do
     project = Project.create(team_id: teams(:second_team).id, name: 'test project', user_id: @current_user.id)
-    event = Event.last
+    event   = Event.last
     assert_equal event.trackable_id, project.id
     assert_equal event.trackable_type, 'Project'
     assert_equal event.ancestor_id, project.id

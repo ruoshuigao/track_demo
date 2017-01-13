@@ -12,7 +12,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test "should retun one team data when just create one team" do
-    team = teams(:first_team)
+    team       = teams(:first_team)
     team_event = events(:first_team_event)
 
     get :index, params: {team_id: team.id, user_id: @current_user.id}
