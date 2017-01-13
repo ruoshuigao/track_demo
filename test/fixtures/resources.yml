@@ -1,0 +1,19 @@
+first_team_resource:
+  resourceable: first_team (Team)
+  team_id: <%= ActiveRecord::FixtureSet.identify(:first_team) %>
+
+second_team_resource:
+  resourceable: second_team (Team)
+  team_id: <%= ActiveRecord::FixtureSet.identify(:second_team) %>
+
+first_project_resource:
+  resourceable: first_project (Project)
+  team_id: <%= ActiveRecord::FixtureSet.identify(:second_team) %>
+
+second_project_resource:
+  resourceable: second_project (Project)
+  team_id: <%= ActiveRecord::FixtureSet.identify(:second_team) %>
+
+todo_project_resource:
+  resourceable: todo_project (Project)
+  team_id: <%= ActiveRecord::FixtureSet.identify(:second_team) %>

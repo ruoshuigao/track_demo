@@ -26,7 +26,19 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1'
+
+# RequestStore gives you per-request global storage.
+gem 'request_store', '~> 1.3'
+
+# AASM is a continuation of the acts-as-state-machine rails plugin, built for plain Ruby objects.
+gem 'aasm', '~> 4.11'
+
+# Soft deletion
+gem 'paranoia', '~> 2.2'
+
+# Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 4+
+gem 'kaminari', '~> 1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -40,6 +52,11 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
+end
+
+group :test do
+  # Extracting `assigns` and `assert_template` from ActionDispatch.
+  gem 'rails-controller-testing', '~> 1.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

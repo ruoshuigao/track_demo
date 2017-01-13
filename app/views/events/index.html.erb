@@ -1,0 +1,25 @@
+<div class="page page-root">
+  <div class="page-inner" id="page-events">
+    <div class="filters">
+    </div>
+    <div class="team-events">
+      <% @team_events_hash.each do |event_hash| %>
+        <div class="events-day">
+          <h4 class="events-day-title">
+            <span class="date"><%= event_hash[:created_date] %></span>
+          </h4>
+          <div class="events-day-content">
+            <% event_hash[:items].each do |item| %>
+              <div class="events-ancestor">
+                <h5 class="events-ancestor-title"><%= link_to item[:category], event_redirect_url_with(item[:ancestor_id], item[:ancestor_type]), target: '_blank' %></h5>
+                <% item[:events].each do |event| %>
+                  <%= render partial: 'event_common', locals: { event: event } %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

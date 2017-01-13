@@ -1,0 +1,44 @@
+fresh_todo:
+  user:    ava
+  project: todo_project
+  name:    'fresh todo'
+  status:  'status_fresh'
+
+running_todo:
+  user:    ava
+  project: todo_project
+  name:    'running todo'
+  status:  'status_running'
+
+pause_todo:
+  user:    ava
+  project: todo_project
+  name:    'pause todo'
+  status:  'status_pause'
+
+completed_todo:
+  user:    ava
+  project: todo_project
+  name:    'completed todo'
+  status:  'status_completed'
+
+reorder_todo:
+  user:    ava
+  project: todo_project
+  name:    'reorder todo'
+  status:  'status_reorder'
+
+assigned_todo:
+  user:    ava
+  project: todo_project
+  name:    'assigned todo'
+  status:  'status_fresh'
+  assignee: ava
+  due_at:  '2017-01-11'
+
+deleted_todo:
+  user:       ava
+  project:    todo_project
+  name:       'deleted todo'
+  status:     'status_fresh'
+  deleted_at: '2017-01-12 10:58:00'

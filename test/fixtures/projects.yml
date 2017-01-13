@@ -1,0 +1,20 @@
+first_project:
+  user:        ava
+  team:        second_team
+  name:        'first project'
+  description: 'first project'
+  status:      'status_fresh'
+
+second_project:
+  user:        ava
+  team:        second_team
+  name:        'second project'
+  description: 'second project'
+  status:      'status_archived'
+
+todo_project:
+  user:        ava
+  team:        second_team
+  name:        'todo project'
+  description: 'todo project'
+  status:      'status_fresh'
