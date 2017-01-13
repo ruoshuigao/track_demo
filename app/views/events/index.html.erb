@@ -4,8 +4,10 @@
     </div>
     <div class="team-events">
       <% @team_events_hash.each do |event_hash| %>
-        <div class="event-days">
-          <h4 class="events-day-title"><%= event_hash[:created_date] %></h4>
+        <div class="events-day">
+          <h4 class="events-day-title">
+            <span class="date"><%= event_hash[:created_date] %></span>
+          </h4>
           <div class="events-day-content">
             <% event_hash[:items].each do |item| %>
               <div class="events-ancestor">
