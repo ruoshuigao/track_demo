@@ -3,6 +3,43 @@
 module Eventable
   extend ActiveSupport::Concern
 
+  SPECIAL_SITES = {
+    Team: {
+      ancestor_id:    'id',
+      ancestor_type:  'Team',
+      team_id:         'id',
+      resourceable_id: 'id',
+      trackable_name:  'title',
+      ancestor_name:   'title'
+    },
+    Project: {
+      ancestor_id:     'id',
+      ancestor_type:   'Project',
+      team_id:         'team_id',
+      resourceable_id: 'id',
+      trackable_name:  'name',
+      ancestor_name:   'name'
+    },
+    Todo: {
+      ancestor_id:     'project_id',
+      ancestor_type:   'Project',
+      team_id:         'project.team_id',
+      resourceable_id: 'project_id',
+      trackable_name:  'name',
+      ancestor_name:   'project.name',
+      priority:        'priority',
+      tag:             'tag'
+    },
+    Comment: {
+      ancestor_id:     'commentable_id',
+      ancestor_type:   'commentable_type',
+      team_id:         'commentable.project.team_id',
+      resourceable_id: 'commentable.project_id',
+      trackable_name:  'content',
+      ancestor_name:   'commentable.name'
+    }
+  }
+
   included do
     has_many :events, as: :trackable
   end
@@ -69,50 +106,21 @@ module Eventable
 
     private
 
-    # TODO 添加权限时补充 resource_id
     def meta_data
       meta_hash     = {content: {}}
       ancestor_hash = {}
-      case self
-      when Team
-        resource_id = Resource.find_by(resourceable_id: self.id).id
-        ancestor_hash[:ancestor_id]          = self.id
-        ancestor_hash[:ancestor_type]        = 'Team'
-        ancestor_hash[:team_id]              = self.id
-        ancestor_hash[:resource_id]          = resource_id
-        meta_hash[:content][:trackable_name] = self.title
-        meta_hash[:content][:ancestor_name]  = self.title
-        [ancestor_hash, meta_hash]
-      when Project
-        resource_id = Resource.find_by(resourceable_id: self.id).id
-        ancestor_hash[:ancestor_id]          = self.id
-        ancestor_hash[:ancestor_type]        = 'Project'
-        ancestor_hash[:team_id]              = self.team_id
-        ancestor_hash[:resource_id]          = resource_id
-        meta_hash[:content][:trackable_name] = self.name
-        meta_hash[:content][:ancestor_name]  = self.name
-        [ancestor_hash, meta_hash]
-      when Todo
-        resource_id = Resource.find_by(resourceable_id: self.project_id).id
-        ancestor_hash[:ancestor_id]          = self.project_id
-        ancestor_hash[:ancestor_type]        = 'Project'
-        ancestor_hash[:team_id]              = self.project.team_id
-        ancestor_hash[:resource_id]          = resource_id
-        meta_hash[:content][:trackable_name] = self.name
-        meta_hash[:content][:ancestor_name]  = self.project.name
-        meta_hash[:content][:priority]       = self.priority if self.priority
-        meta_hash[:content][:tag]            = self.tag      if self.tag
-        [ancestor_hash, meta_hash]
-      when Comment # TODO 需要兼容评论周报等场景
-        resource_id = Resource.find_by(resourceable_id: self.commentable.project_id).id
-        ancestor_hash[:ancestor_id]          = self.commentable.id
-        ancestor_hash[:ancestor_type]        = self.commentable.class.name
-        ancestor_hash[:team_id]              = self.commentable.project.team_id
-        ancestor_hash[:resource_id]          = resource_id
-        meta_hash[:content][:trackable_name] = self.content
-        meta_hash[:content][:ancestor_name]  = self.commentable.name
-        [ancestor_hash, meta_hash]
-      end
+      resource_id   = SPECIAL_SITES[self.class.name.to_sym][:resourceable_id].split(".").inject(self){|obj, met| obj.send(met)}
+
+      ancestor_hash[:ancestor_id]          = SPECIAL_SITES[self.class.name.to_sym][:ancestor_id].split(".").inject(self){|obj, met| obj.send(met)}
+      ancestor_hash[:ancestor_type]        = SPECIAL_SITES[self.class.name.to_sym][:ancestor_type]
+      ancestor_hash[:team_id]              = SPECIAL_SITES[self.class.name.to_sym][:team_id].split(".").inject(self){|obj, met| obj.send(met)}
+      ancestor_hash[:resource_id]          = Resource.find_by(resourceable_id: resource_id)&.id
+
+      meta_hash[:content][:trackable_name] = SPECIAL_SITES[self.class.name.to_sym][:trackable_name].split(".").inject(self){|obj, met| obj.send(met)}
+      meta_hash[:content][:ancestor_name]  = SPECIAL_SITES[self.class.name.to_sym][:ancestor_name].split(".").inject(self){|obj, met| obj.send(met)}
+      meta_hash[:content][:priority]       = send("#{SPECIAL_SITES[self.class.name.to_sym][:priority]}") if SPECIAL_SITES[self.class.name.to_sym][:priority]
+      meta_hash[:content][:tag]            = send("#{SPECIAL_SITES[self.class.name.to_sym][:tag]}")      if SPECIAL_SITES[self.class.name.to_sym][:tag]
+      [ancestor_hash, meta_hash]
     end
 
     def event_record_update

@@ -13,10 +13,10 @@ class Comment < ApplicationRecord
   private
 
   def generate_create_event
-    commentable.create_event(:create_comment, {comment_content: content})
+    commentable.create_event(:create_comment, { comment_content: content })
   end
 
   def generate_destroy_event
-    commentable.create_event(:destroy_comment, {comment_content: content})
+    commentable.create_event(:destroy_comment, { comment_content: content })
   end
 end
