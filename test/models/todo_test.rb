@@ -173,6 +173,25 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal   event.data['content']['after'], rainbow.name
   end
 
+  test 'should create an event when change a todo to another assignee they are same name' do
+    todo    = todos(:assigned_todo)
+    rainbow = users(:rainbow)
+    todo.update_attributes(assignee_id: rainbow.id, assignee_name: 'ava')
+    event = Event.last
+
+    assert_equal event.trackable_id, todo.id
+    assert_equal event.trackable_type, 'Todo'
+    assert_equal event.ancestor_id, todo.project_id
+    assert_equal event.ancestor_type, 'Project'
+    assert_equal event.actor_id, @current_user.id
+    assert_equal event.actor_name, @current_user.name
+    assert_equal event.action, 'assign'
+    assert_equal event.team_id, todo.project.team_id
+    assert_equal event.data['content']['trackable_name'], todo.name
+    assert_equal event.data['content']['ancestor_name'], todo.project.name
+    assert_equal   event.data['content']['after'], 'ava'
+  end
+
   test 'should create an event when set due_at for a todo' do
     todo   = todos(:fresh_todo)
     due_at = '2017-01-12'
@@ -227,6 +246,15 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal event.data['content']['trackable_name'], todo.name
     assert_equal event.data['content']['ancestor_name'], todo.project.name
     assert_equal Date.parse(event.data['content']['after']).to_s, due_at
+  end
+
+  test 'should create two event when change assign and due_at at the same time' do
+    todo    = todos(:assigned_todo)
+    rainbow = users(:rainbow)
+    due_at  = '2017-01-12'
+    assert_difference('Event.count', 2) do
+      todo.update_attributes(assignee_id: rainbow.id, assignee_name: rainbow.name, due_at: due_at)
+    end
   end
 
   test 'should create an event when destroy a todo' do

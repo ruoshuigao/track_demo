@@ -17,8 +17,10 @@ module Accessable
           self.team_id
         end
 
-      resource = Resource.create(resourceable: self, team_id: team_id)
-      Access.create(user_id: self.user_id, resource_id: resource.id)
+      ActiveRecord::Base.transaction do
+        resource = Resource.create!(resourceable: self, team_id: team_id)
+        Access.create!(user_id: self.user_id, resource_id: resource.id)
+      end
     end
   end
 end
