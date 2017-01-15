@@ -38,7 +38,20 @@ module Eventable
       trackable_name:  'content',
       ancestor_name:   'commentable.name'
     }
-  }
+  }.freeze
+
+  # 记录发生修改的字段
+  CHANGE_SITE = {
+    Project: ['status'],
+    Todo:    ['status', 'assignee_id', 'due_at']
+  }.freeze
+
+  # Action 映射关系
+  ACTION_HASH = {
+    status:      'status_transition',
+    assignee_id: 'assign',
+    due_at:      'set_due_at'
+  }.freeze
 
   included do
     has_many :events, as: :trackable
@@ -109,22 +122,25 @@ module Eventable
     def meta_data
       meta_hash     = {content: {}}
       ancestor_hash = {}
-      resource_id   = SPECIAL_SITES[self.class.name.to_sym][:resourceable_id].split(".").inject(self){|obj, met| obj.send(met)}
+      event_type    = self.class.name.to_sym
+      resource_id   = SPECIAL_SITES[event_type][:resourceable_id].split(".").inject(self){|obj, met| obj.send(met)}
 
-      ancestor_hash[:ancestor_id]          = SPECIAL_SITES[self.class.name.to_sym][:ancestor_id].split(".").inject(self){|obj, met| obj.send(met)}
-      ancestor_hash[:ancestor_type]        = SPECIAL_SITES[self.class.name.to_sym][:ancestor_type]
-      ancestor_hash[:team_id]              = SPECIAL_SITES[self.class.name.to_sym][:team_id].split(".").inject(self){|obj, met| obj.send(met)}
+      ancestor_hash[:ancestor_id]          = SPECIAL_SITES[event_type][:ancestor_id].split(".").inject(self){|obj, met| obj.send(met)}
+      ancestor_hash[:ancestor_type]        = SPECIAL_SITES[event_type][:ancestor_type]
+      ancestor_hash[:team_id]              = SPECIAL_SITES[event_type][:team_id].split(".").inject(self){|obj, met| obj.send(met)}
       ancestor_hash[:resource_id]          = Resource.find_by(resourceable_id: resource_id)&.id
 
-      meta_hash[:content][:trackable_name] = SPECIAL_SITES[self.class.name.to_sym][:trackable_name].split(".").inject(self){|obj, met| obj.send(met)}
-      meta_hash[:content][:ancestor_name]  = SPECIAL_SITES[self.class.name.to_sym][:ancestor_name].split(".").inject(self){|obj, met| obj.send(met)}
-      meta_hash[:content][:priority]       = send("#{SPECIAL_SITES[self.class.name.to_sym][:priority]}") if SPECIAL_SITES[self.class.name.to_sym][:priority]
-      meta_hash[:content][:tag]            = send("#{SPECIAL_SITES[self.class.name.to_sym][:tag]}")      if SPECIAL_SITES[self.class.name.to_sym][:tag]
+      meta_hash[:content][:trackable_name] = SPECIAL_SITES[event_type][:trackable_name].split(".").inject(self){|obj, met| obj.send(met)}
+      meta_hash[:content][:ancestor_name]  = SPECIAL_SITES[event_type][:ancestor_name].split(".").inject(self){|obj, met| obj.send(met)}
+      meta_hash[:content][:priority]       = send("#{SPECIAL_SITES[event_type][:priority]}") if SPECIAL_SITES[event_type][:priority]
+      meta_hash[:content][:tag]            = send("#{SPECIAL_SITES[event_type][:tag]}")      if SPECIAL_SITES[event_type][:tag]
       [ancestor_hash, meta_hash]
     end
 
     def event_record_update
-      create_event(event_update_action, object_attrs_for_event_with_update) unless event_update_action == 'update'
+      object_attrs_for_event_with_update.each_pair do |event_update_action, object_attr|
+        create_event(event_update_action, object_attr)
+      end
     end
 
     # 发生修改的数据
@@ -132,40 +148,25 @@ module Eventable
       object_attrs_changed = changes.except(*self.event_options[:skip])
       return if object_attrs_changed.empty?
 
-      case self
-      when Team
-        {}
-      when Project
-        status_changed? ? { prev: changes[:status].first, after: changes[:status].last } : {}
-      when Todo
-        if status_changed?
-          { prev: changes[:status].first, after: changes[:status].last }
-        elsif assignee_id_changed?
-          # 用户id不同，用户名相同的情况
+      return unless CHANGE_SITE.keys.include?(self.class.name.to_sym)
+
+      changed_attributes_arr = CHANGE_SITE[self.class.name.to_sym] & changes.keys
+      return if changed_attributes_arr.empty?
+
+      changed_hash = {}
+      changed_attributes_arr.each do |attribute|
+        if attribute == 'assignee_id'
           if changes[:assignee_name]
-            { prev: changes[:assignee_name].first, after: changes[:assignee_name].last }
-          else
-            { prev: self.assignee_name, after: self.assignee_name }
+            changed_hash[ACTION_HASH[attribute.to_sym]] = { prev: changes[:assignee_name].first, after: changes[:assignee_name].last }
+          else # 任务分配的责任人同名
+            changed_hash[ACTION_HASH[attribute.to_sym]] = { prev: self.assignee_name, after: self.assignee_name }
           end
-        elsif due_at_changed?
-          { prev: changes[:due_at].first, after: changes[:due_at].last }
         else
-          {}
+          changed_hash[ACTION_HASH[attribute.to_sym]] = { prev: changes[attribute.to_sym].first, after: changes[attribute.to_sym].last }
         end
       end
-    end
 
-    # 针对 update 请求，转换相应的 action
-    def event_update_action
-      if self.class.column_names.include?('status') && status_changed?
-        'status_transition'
-      elsif self.class.column_names.include?('assignee_id') && assignee_id_changed?
-        'assign'
-      elsif self.class.column_names.include?('due_at') && due_at_changed?
-        'set_due_at'
-      else
-        'update'
-      end
+      changed_hash
     end
 
     # FIXME 无实际登录用户，用户数据硬编码

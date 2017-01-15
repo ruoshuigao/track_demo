@@ -26,13 +26,6 @@ module EventsHelper
   end
 
   def event_redirect_url_with(id, type)
-    case type
-    when 'Team'
-      team_path(id)
-    when 'Project'
-      project_path(id)
-    when 'Todo'
-      todo_path(id)
-    end
+    "#{ENV['SITE_HOST']}/#{type.underscore}s/#{id}"
   end
 end
